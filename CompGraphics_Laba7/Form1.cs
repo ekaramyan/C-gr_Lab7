@@ -39,7 +39,7 @@ namespace CompGraphics_Laba7
             Pen myWindows = new Pen(Color.BurlyWood, 2);
             // Определение кистей
             SolidBrush myBody = new SolidBrush(Color.Black);
-            SolidBrush myHold = new SolidBrush(Color.Green);
+            SolidBrush myHold = new SolidBrush(Color.DarkRed);
             SolidBrush myTube = new SolidBrush(Color.Gray);
             // Рисование и закраска труб, трюма и корпуса корабля
             g_ship.FillRectangle(myTube, 100, 0, 25, 25);
@@ -60,20 +60,20 @@ namespace CompGraphics_Laba7
         void DrawSprite()
         {
             // Задаем красный цвет для носа ракеты
-            SolidBrush myNos = new SolidBrush(Color.Red);
+            SolidBrush myNose = new SolidBrush(Color.Red);
             // Задаем белый и серый цвет для корпуса ракеты
-            SolidBrush myShip = new SolidBrush(Color.Silver);
+            SolidBrush myRBody = new SolidBrush(Color.Silver);
             SolidBrush myLine = new SolidBrush(Color.Gray);
 
 
             {
                 //Рисуем нос ракеты
-                g_sprite.FillPolygon(myNos, new Point[]
+                g_sprite.FillPolygon(myNose, new Point[]
             {
 
-            new Point(275,143),new Point(275,260),
-            new Point(380,235)//,new Point(300,145),
-            //new Point(250,145),new Point(300,300),
+            new Point(275+20,143-1),new Point(275+20,260-1),
+            new Point(380+150,235+150), new Point(300,145),
+            //new Point(335,145),new Point(335,300),
             //new Point(300,300),new Point(250,145),
             //new Point(250,145),new Point(300,300)
 
@@ -81,13 +81,13 @@ namespace CompGraphics_Laba7
                 //Рисуем нижнюю часть ракеты
                 g_sprite.FillPolygon(myLine, new Point[] {
 
-            new Point(204,130),new Point(204,130),
-            new Point(204,150),new Point(235,150),
+            new Point(204+10,130),new Point(204+10,130),
+            new Point(204+10,150),new Point(235+10,150),
             //new Point(120,145),new Point(120,200)
 
             });
                 //Рисуем корпус ракеты белым цветом
-                g_sprite.FillRectangle(myShip, 204, 145, 72, 155);
+                g_sprite.FillRectangle(myRBody, 204+10, 145, 72+10, 155+10);
             }
 
 
@@ -130,8 +130,8 @@ namespace CompGraphics_Laba7
             SavePart(x, y);
             // Выводим корабль на графический контекст g_pictureBox
             DrawShip();
-            g_pictureBox.DrawImage(shipBitMap, x, y);
-            g_pictureBox.DrawImage(spriteBitMap, x, y);
+            g_pictureBox.DrawImage(shipBitMap, x-60, y);
+            g_pictureBox.DrawImage(spriteBitMap, x+120, y);
             // Перерисовываем pictureBox1
             pictureBox1.Invalidate();
             // Создаём таймер с интервалом 100 миллисекунд
@@ -146,9 +146,9 @@ namespace CompGraphics_Laba7
         private void timer1_Tick(object sender, EventArgs e)
         {
             // Восстанавливаем затёртую область статического изображения
-            g_pictureBox.DrawImage(cloneBitMap, x, y);
+            g_pictureBox.DrawImage(cloneBitMap, x+200, y);
             // Изменяем координаты для следующего вывода
-            x += 6;
+            x += 20;
             // Проверяем на выход изображения автобуса за правую границу
             if (x > pictureBox1.Width - 1) x = pictureBox1.Location.X;
             // Сохраняем область экрана перед первым выводом автобуса
@@ -166,3 +166,12 @@ namespace CompGraphics_Laba7
         }
     }
 }
+
+/*            new Point(275,143),new Point(275,260),
+            new Point(380,235)
+*/
+
+/*
+  new Point(204,130),new Point(204,130),
+        new Point(204,150),new Point(235,150),
+ */
