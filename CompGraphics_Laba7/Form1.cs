@@ -72,7 +72,7 @@ namespace CompGraphics_Laba7
             {
 
             new Point(275+20,143-1),new Point(275+20,260-1),
-            new Point(380+150,235+150), new Point(300,145),
+            new Point(380+150,235+150), new Point(300+50,145+15),
             //new Point(335,145),new Point(335,300),
             //new Point(300,300),new Point(250,145),
             //new Point(250,145),new Point(300,300)
@@ -130,9 +130,9 @@ namespace CompGraphics_Laba7
             SavePart(x, y);
             // Выводим корабль на графический контекст g_pictureBox
             DrawShip();
-            g_pictureBox.DrawImage(shipBitMap, x-60, y);
+            g_pictureBox.DrawImage(shipBitMap, x-87, y);
             g_pictureBox.DrawImage(spriteBitMap, x+120, y);
-            // Перерисовываем pictureBox1
+                        // Перерисовываем pictureBox1
             pictureBox1.Invalidate();
             // Создаём таймер с интервалом 100 миллисекунд
             timer = new Timer();
@@ -146,7 +146,7 @@ namespace CompGraphics_Laba7
         private void timer1_Tick(object sender, EventArgs e)
         {
             // Восстанавливаем затёртую область статического изображения
-            g_pictureBox.DrawImage(cloneBitMap, x+200, y);
+            g_pictureBox.DrawImage(cloneBitMap, x+213, y);
             // Изменяем координаты для следующего вывода
             x += 20;
             // Проверяем на выход изображения автобуса за правую границу
