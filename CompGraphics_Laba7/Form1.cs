@@ -16,6 +16,8 @@ namespace CompGraphics_Laba7
         Bitmap pictureBoxBitMap;
         // Битовая картинка динамического изображения
         Bitmap spriteBitMap;
+
+        Bitmap shipBitMap;
         // Битовая картинка для временного хранения области экрана
         Bitmap cloneBitMap;
         // Графический контекст picturebox
@@ -34,41 +36,37 @@ namespace CompGraphics_Laba7
         }
         void DrawShip()
         {
-        Pen myWindows = new Pen(Color.BurlyWood, 2);
-        // Определение кистей
-        SolidBrush myBody = new SolidBrush(Color.Black);
-        SolidBrush myHold = new SolidBrush(Color.Green);
-        SolidBrush myTube = new SolidBrush(Color.Gray);
-        // Рисование и закраска труб, трюма и корпуса корабля
-        g_sprite.FillRectangle(myTube, 100, 0, 25, 25);
-            g_sprite.FillRectangle(myTube, 150, 0, 25, 25);
+            Pen myWindows = new Pen(Color.BurlyWood, 2);
+            // Определение кистей
+            SolidBrush myBody = new SolidBrush(Color.Black);
+            SolidBrush myHold = new SolidBrush(Color.Green);
+            SolidBrush myTube = new SolidBrush(Color.Gray);
+            // Рисование и закраска труб, трюма и корпуса корабля
+            g_ship.FillRectangle(myTube, 100, 0, 25, 25);
+            g_ship.FillRectangle(myTube, 150, 0, 25, 25);
 
-            g_sprite.FillPolygon(myBody, new Point[] {
+            g_ship.FillPolygon(myBody, new Point[] {
                 new Point(0, 75),new Point(300, 75),
                 new Point(235, 175), new Point(50, 175),
                 new Point(0, 75)
             });
-            g_sprite.FillRectangle(myHold, 50, 25, 175, 50);
+            g_ship.FillRectangle(myHold, 50, 25, 175, 50);
 
-            g_sprite.DrawEllipse(myWindows, 90, 40, 20, 20);
-            g_sprite.DrawEllipse(myWindows, 130, 40, 20, 20);
-            g_sprite.DrawEllipse(myWindows, 170, 40, 20, 20);
+            g_ship.DrawEllipse(myWindows, 90, 40, 20, 20);
+            g_ship.DrawEllipse(myWindows, 130, 40, 20, 20);
+            g_ship.DrawEllipse(myWindows, 170, 40, 20, 20);
         }
-        // Функция рисования спрайта (корабля)
+        // Функция рисования спрайта (ракета)
         void DrawSprite()
         {
             // Задаем красный цвет для носа ракеты
             SolidBrush myNos = new SolidBrush(Color.Red);
-            // Задаем серебряный цвет для топливных баков
-            SolidBrush myBak = new SolidBrush(Color.Silver);
             // Задаем белый и серый цвет для корпуса ракеты
             SolidBrush myShip = new SolidBrush(Color.Silver);
             SolidBrush myLine = new SolidBrush(Color.Gray);
-            // Задаем желтый и оранжевый цвет для пламени
-            SolidBrush myFire1 = new SolidBrush(Color.Yellow);
-            SolidBrush myFire2 = new SolidBrush(Color.Orange);
 
-            { 
+
+            {
                 //Рисуем нос ракеты
                 g_sprite.FillPolygon(myNos, new Point[]
             {
@@ -89,7 +87,7 @@ namespace CompGraphics_Laba7
 
             });
                 //Рисуем корпус ракеты белым цветом
-               g_sprite.FillRectangle(myShip, 204, 145, 72, 155);
+                g_sprite.FillRectangle(myShip, 204, 145, 72, 155);
             }
 
 
@@ -114,7 +112,9 @@ namespace CompGraphics_Laba7
             // Создаём Bitmap для спрайта и графический контекст
             spriteBitMap = new Bitmap(width, height);
             g_sprite = Graphics.FromImage(spriteBitMap);
-            g_ship = Graphics.FromImage(spriteBitMap);
+            // Создаём Bitmap для корбля и графический контекст
+            shipBitMap = new Bitmap(width, height);
+            g_ship = Graphics.FromImage(shipBitMap);
             // Рисование и закраска моря
             int r = 50, iks = 50;
             while (iks <= pictureBox1.Width + r)
@@ -122,8 +122,6 @@ namespace CompGraphics_Laba7
                 g_pictureBox.FillPie(Brushes.Blue, -50 + iks, 375, 50, 50, 0, -180);
                 iks += 50;
             }
-            // Рисуем автобус на графическом контексте g_sprite
-            DrawSprite();
             // Создаём Bitmap для временного хранения части изображения
             cloneBitMap = new Bitmap(width, height);
             // Задаем начальные координаты вывода движущегося объекта
@@ -131,6 +129,8 @@ namespace CompGraphics_Laba7
             // Сохраняем область экрана перед первым выводом объекта
             SavePart(x, y);
             // Выводим корабль на графический контекст g_pictureBox
+            DrawShip();
+            g_pictureBox.DrawImage(shipBitMap, x, y);
             g_pictureBox.DrawImage(spriteBitMap, x, y);
             // Перерисовываем pictureBox1
             pictureBox1.Invalidate();
@@ -138,6 +138,7 @@ namespace CompGraphics_Laba7
             timer = new Timer();
             timer.Interval = 100;
             timer.Tick += new EventHandler(timer1_Tick);
+
         }
 
 
@@ -146,13 +147,13 @@ namespace CompGraphics_Laba7
         {
             // Восстанавливаем затёртую область статического изображения
             g_pictureBox.DrawImage(cloneBitMap, x, y);
-            // Изменяем координаты для следующего вывода автобуса
+            // Изменяем координаты для следующего вывода
             x += 6;
             // Проверяем на выход изображения автобуса за правую границу
             if (x > pictureBox1.Width - 1) x = pictureBox1.Location.X;
             // Сохраняем область экрана перед первым выводом автобуса
             SavePart(x, y);
-            // Выводим автобус
+            // Выводим
             g_pictureBox.DrawImage(spriteBitMap, x, y);
             // Перерисовываем pictureBox1
             pictureBox1.Invalidate();
@@ -160,6 +161,7 @@ namespace CompGraphics_Laba7
         // Включаем таймер по нажатию на кнопку
         private void button1_Click(object sender, EventArgs e)
         {
+            DrawSprite();
             timer.Enabled = true;
         }
     }
